@@ -3,6 +3,7 @@ programa {
     cadeia emailUser = ""
     cadeia senhaUser = "" 
     cadeia nomeUser = ""
+    logico fim = falso
 
     funcao inicio() {
         menu()
@@ -26,8 +27,9 @@ programa {
               pare
               caso contrario:
                 escreva("Opção inválida!\n")
+                u.aguarde(5000)
             }
-        }enquanto(opcao != "0")
+        }enquanto(opcao != "0" e fim == falso)
     }
     
     funcao cadastroUser() {
@@ -41,15 +43,17 @@ programa {
 
     funcao login() {
       cadeia senha, email
+      se (emailUser == "" e senhaUser == "") {
+        escreva("Nenhum usuário cadastrado.\n")
+        u.aguarde(5000)
+      }
+      senao
         para (inteiro i = 0; i <= 2; i++) {
             escreva("Digite seu email: ")
             leia(email)
             escreva("\nDigite sua senha: ")
             leia(senha)
-            se (emailUser == "" e senhaUser == "") {
-                escreva("Nenhum usuário cadastrado.\n")
-                pare
-            } senao se (email == emailUser e senha == senhaUser) {
+            se (email == emailUser e senha == senhaUser) {
                 limpa()
                 escreva("Login bem-sucedido! Bem-vindo, " + nomeUser + "\n")
                 u.aguarde(5000)
@@ -60,6 +64,8 @@ programa {
             }
             se (i == 2) {
                 escreva("Usuário Bloqueado!")
+                u.aguarde(5000)
+                fim = verdadeiro
             }
         }
     }
@@ -203,7 +209,7 @@ programa {
     funcao conversorMoeda(){
       // dados de 25/09
       real moedaReal
-      inteiro opcao
+      cadeia opcao
       faca{
         limpa()
         escreva("Digite o valor em Reais que deseja converter: \nR$ ")
@@ -255,7 +261,7 @@ programa {
             escreva("Opção inválida.\n")
         }
         u.aguarde(5000)
-      }enquanto(opcao != "0")
+      }enquanto(opcao != "3")
     }
     
     funcao glob(cadeia opcaoCalc){
@@ -266,7 +272,9 @@ programa {
         leia(valor[i])
       }
       se(opcaoCalc == "4" e valor[1] == 0){
+          limpa()
           escreva("Não pode dividir por zero.")
+          u.aguarde(5000)
       }senao {
         escolha(opcaoCalc){
           caso "1":
