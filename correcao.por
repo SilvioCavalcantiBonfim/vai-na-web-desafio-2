@@ -3,7 +3,6 @@ programa {
     cadeia emailUser = ""
     cadeia senhaUser = "" 
     cadeia nomeUser = ""
-    logico fim = falso
 
     funcao inicio() {
         menu()
@@ -27,9 +26,8 @@ programa {
               pare
               caso contrario:
                 escreva("Opção inválida!\n")
-                u.aguarde(5000)
             }
-        }enquanto(opcao != "0" e fim == falso)
+        }enquanto(opcao != "0")
     }
     
     funcao cadastroUser() {
@@ -43,17 +41,15 @@ programa {
 
     funcao login() {
       cadeia senha, email
-      se (emailUser == "" e senhaUser == "") {
-        escreva("Nenhum usuário cadastrado.\n")
-        u.aguarde(5000)
-      }
-      senao
         para (inteiro i = 0; i <= 2; i++) {
             escreva("Digite seu email: ")
             leia(email)
             escreva("\nDigite sua senha: ")
             leia(senha)
-            se (email == emailUser e senha == senhaUser) {
+            se (emailUser == "" e senhaUser == "") {
+                escreva("Nenhum usuário cadastrado.\n")
+                pare
+            } senao se (email == emailUser e senha == senhaUser) {
                 limpa()
                 escreva("Login bem-sucedido! Bem-vindo, " + nomeUser + "\n")
                 u.aguarde(5000)
@@ -64,8 +60,6 @@ programa {
             }
             se (i == 2) {
                 escreva("Usuário Bloqueado!")
-                u.aguarde(5000)
-                fim = verdadeiro
             }
         }
     }
@@ -209,7 +203,7 @@ programa {
     funcao conversorMoeda(){
       // dados de 25/09
       real moedaReal
-      cadeia opcao
+      inteiro opcao
       faca{
         limpa()
         escreva("Digite o valor em Reais que deseja converter: \nR$ ")
@@ -261,40 +255,38 @@ programa {
             escreva("Opção inválida.\n")
         }
         u.aguarde(5000)
-      }enquanto(opcao != "3")
+      }enquanto(opcao != "0")
     }
     
     funcao glob(cadeia opcaoCalc){
-      real valor[2]
+      real valor
+      inteiro i = 0
       real resultado = 0
-      para(inteiro i = 0; i < 2; i++){
+      faca{
         escreva("[0] para Imprimir o Resultado\n", "Digite o ", i+1, "° Valor: ")
-        leia(valor[i])
-      }
-      se(opcaoCalc == "4" e valor[1] == 0){
-          limpa()
-          escreva("Não pode dividir por zero.")
-          u.aguarde(5000)
-      }senao {
-        escolha(opcaoCalc){
-          caso "1":
-            resultado = valor[0]+valor[1]
-          pare
-          caso "2":
-            resultado = valor[0]-valor[1]
-          pare
-          caso "3":
-            resultado = valor[0]*valor[1]
-          pare
-          caso "4":
-            resultado = valor[0]/valor[1]
-          pare
-          caso contrario:
-            escreva("Operação inválida.")
+        leia(valor)
+        se(opcaoCalc == "4" e valor == 0){
+            escreva("Não pode dividir por zero.")
+        }senao {
+          i++
+          escolha(opcaoCalc){
+            caso "1":
+              resultado += valor
+            pare
+            caso "2":
+              resultado -= valor
+            pare
+            caso "3":
+              resultado *= valor
+            pare
+            caso "4":
+              resultado /= valor
+            pare
+          }
         }
-        limpa()
-        escreva("O resultado é: ", resultado, "\n")
-        u.aguarde(5000)
-      }
+          limpa()
+      }enquanto(valor != 0)
+      escreva("O resultado é: ", resultado, "\n")
+      u.aguarde(5000)
     }
 }
